@@ -121,7 +121,8 @@ table td {
 }
 
 #add-review-form,
-#add-performer-form {
+#add-performer-form,
+#update-review-form {
   display: grid;
   grid-template-columns: auto auto;
   grid-gap: 1rem;

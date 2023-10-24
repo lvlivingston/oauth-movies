@@ -1,6 +1,9 @@
-<br><br><h2>Review to Update</h2>
+<%- include('../partials/header') %>
+
+<section id="update-page"></section>
+<h2>Review to Update</h2>
 <% if (user) { %>
-  <form id="review-to-update" method="POST"
+  <form id="update-review-form" method="POST"
     action="/reviews/<%= reviewToUpdate._id %>?_method=PUT">
     <label>Review:</label>
     <textarea name="content"><%= reviewToUpdate.content %></textarea>
@@ -15,3 +18,7 @@
     <input type="submit" value="Update Review">
   </form>
 <% } %>
+
+</section>
+
+<%- include('../partials/footer') %>

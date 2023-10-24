@@ -17,7 +17,7 @@ function show(req, res) {
     if (!movie) return res.redirect('/movies');
     const reviewToUpdate = movie.reviews.find(review => review._id.toString() === req.params.id);
     // console.log(reviewToUpdate);
-    res.render('movies/update', {reviewToUpdate});
+    res.render('movies/update', {title: 'Update Movie Review', reviewToUpdate});
   }) 
 }
 
