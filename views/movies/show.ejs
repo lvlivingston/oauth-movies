@@ -54,6 +54,7 @@
         <th>User</th>
         <th>Date</th>
         <th>Review</th>
+        <th></th>
         <th>Rating</th>
         <th></th>
       </tr>
@@ -69,6 +70,13 @@
           <!-- .toLocaleDateString() provides a more friendly date format -->
           <td><%= r.createdAt.toLocaleDateString() %></td>
           <td><%= r.content %></td>
+          <td>
+            <% if (user?._id.equals(r.user)) { %>
+              <form action="/reviews/<%= r._id %>/update">
+                <button type="submit">Edit</button>
+              </form>
+            <% } %>            
+          </td>
           <td><%= r.rating %></td>
           <td>
             <% if (user?._id.equals(r.user)) { %>

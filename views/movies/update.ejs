@@ -1,0 +1,17 @@
+<br><br><h2>Review to Update</h2>
+<% if (user) { %>
+  <form id="review-to-update" method="POST"
+    action="/reviews/<%= reviewToUpdate._id %>?_method=PUT">
+    <label>Review:</label>
+    <textarea name="content"><%= reviewToUpdate.content %></textarea>
+    <!-- <label>Rating:</label>
+    <select name="rating"><%= reviewToUpdate.rating %>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select> -->
+    <input type="submit" value="Update Review">
+  </form>
+<% } %>

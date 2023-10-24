@@ -2,9 +2,42 @@ const Movie = require('../models/movie');
 
 module.exports = {
   create,
+  show,
+  update: updateReview,
   delete: deleteReview
 };
 
+function show(req, res) {
+  //find data
+  Movie.findOne({
+    'reviews._id': req.params.id,
+    'reviews.user': req.user._id
+  })
+  .then(function(movie) {
+    if (!movie) return res.redirect('/movies');
+    const reviewToUpdate = movie.reviews.find(review => review._id.toString() === req.params.id);
+    // console.log(reviewToUpdate);
+    res.render('movies/update', {reviewToUpdate});
+  }) 
+}
+
+function updateReview(req, res, next) {
+  // Note the cool "dot" syntax to query for a movie with a review nested within the array
+  Movie.findOne({
+    'reviews._id': req.params.id,
+    'reviews.user': req.user._id
+  }).then(function(movie) {
+    if (!movie) return res.redirect('/movies');
+    const reviewToUpdate = movie.reviews.find(review => review._id.toString() === req.params.id);
+    if (!reviewToUpdate) return res.redirect(`/movies/${movie._id}`);
+    reviewToUpdate.content = req.body.content;
+    movie.save().then(function() {
+      res.redirect(`/movies/${movie._id}`);
+    }).catch(function(err) {
+      return next(err);
+    });
+  });
+}
 
 function deleteReview(req, res, next) {
   // Note the cool "dot" syntax to query for a movie with a review nested within the array
