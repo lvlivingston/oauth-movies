@@ -3,10 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
+var passport = require('passport');
+var methodOverride = require('method-override');
 
 require('dotenv').config();
 // connect to the database with AFTER the config vars are processed
 require('./config/database');
+// configure passport middleware
+require('./config/passport');
 
 const indexRouter = require('./routes/index');
 const moviesRouter = require('./routes/movies');
@@ -24,7 +29,21 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// own middleware function to pass request on to the router middleware
+app.use(function (req, res, next) {
+  // after middleware runs, we have req.user if user logged in, if not, undefined... cool way to give us access to user variable inside all ejs templates
+  res.locals.user = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/movies', moviesRouter);
